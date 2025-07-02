@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="mn">
+  <head>
+    <meta charset="UTF-8" />
+    <title>🎥 Видео Upload & Хөрвүүлэлт</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #f9f9f9;
+        border-radius: 10px;
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+      .upload-block {
+        background: #fff;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      input[type='file'] {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      button {
+        padding: 10px 20px;
+        background-color: #0077cc;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .result {
+        margin-top: 10px;
+        font-weight: bold;
+        color: #333;
+      }
+      select {
+        margin-top: 10px;
+        width: 100%;
+        display: block;
+      }
+      video {
+        margin-top: 10px;
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        background: black;
+      }
+    </style>
+
+    <!-- HLS.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  </head>
+  <body>
+    <h1>📤 4 Видео Upload & Хөрвүүлэлт</h1>
+
+    <div
+      class="upload-block"
+      style="display: flex; flex-direction: column; justify-content: center"
+    >
+      <h3>🔐 Нэвтрэх</h3>
+      <form id="token">
+        <input
+          style="width: 75%; margin-left: 10px; padding: 7px"
+          name="token"
+          placeholder="token"
+          required
+        />
+
+        <button type="submit">🔑 Нэвтрэх</button>
+      </form>
+    </div>
+
+    <div id="app">
+      <div
+        class="upload-block"
+        id="upload0"
+      >
+        <form onsubmit="handleSubmit(event, 0)">
+          <input
+            type="file"
+            accept="video/*"
+            required
+            onchange="handleFileChange(event, 0)"
+          />
+          <button type="submit">📁 Upload & Convert</button>
+          <div
+            class="result"
+            id="result0"
+          ></div>
+
+          <div
+            id="playerContainer0"
+            style="display: none"
+          >
+            <label>🎚️ Сонголт:</label>
+            <select
+              id="select0"
+              onchange="changeVideoSource(0)"
+            ></select>
+            <video
+              id="video0"
+              controls
+              autoplay
+              playsinline
+            ></video>
+          </div>
+        </form>
+      </div>
+
+      <div
+        class="upload-block"
+        id="upload1"
+      >
+        <form onsubmit="handleSubmit(event, 1)">
+          <input
+            type="file"
+            accept="video/*"
+            required
+            onchange="handleFileChange(event, 1)"
+          />
+          <button type="submit">📁 Upload & Convert</button>
+          <div
+            class="result"
+            id="result1"
+          ></div>
+
+          <div
+            id="playerContainer1"
+            style="display: none"
+          >
+            <label>🎚️ Сонголт:</label>
+            <select
+              id="select1"
+              onchange="changeVideoSource(1)"
+            ></select>
+            <video
+              id="video1"
+              controls
+              autoplay
+              playsinline
+            ></video>
+          </div>
+        </form>
+      </div>
+
+      <div
+        class="upload-block"
+        id="upload2"
+      >
+        <form onsubmit="handleSubmit(event, 2)">
+          <input
+            type="file"
+            accept="video/*"
+            required
+            onchange="handleFileChange(event, 2)"
+          />
+          <button type="submit">📁 Upload & Convert</button>
+          <div
+            class="result"
+            id="result2"
+          ></div>
+
+          <div
+            id="playerContainer2"
+            style="display: none"
+          >
+            <label>🎚️ Сонголт:</label>
+            <select
+              id="select2"
+              onchange="changeVideoSource(2)"
+            ></select>
+            <video
+              id="video2"
+              controls
+              autoplay
+              playsinline
+            ></video>
+          </div>
+        </form>
+      </div>
+
+      <div
+        class="upload-block"
+        id="upload3"
+      >
+        <form onsubmit="handleSubmit(event, 3)">
+          <input
+            type="file"
+            accept="video/*"
+            required
+            onchange="handleFileChange(event, 3)"
+          />
+          <button type="submit">📁 Upload & Convert</button>
+          <div
+            class="result"
+            id="result3"
+          ></div>
+
+          <div
+            id="playerContainer3"
+            style="display: none"
+          >
+            <label>🎚️ Сонголт:</label>
+            <select
+              id="select3"
+              onchange="changeVideoSource(3)"
+            ></select>
+            <video
+              id="video3"
+              controls
+              autoplay
+              playsinline
+            ></video>
+          </div>
+        </form>
+      </div>
+    </div>
+    <form id="deleteForm">
+      <input
+        name="id"
+        placeholder="Файлын key"
+        required
+      />
+      <button type="submit">Delete Video</button>
+    </form>
+
+    <script>
+      document.getElementById('token').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const fd = new FormData(e.target);
+        const token = fd.get('token');
+        if (!token) {
+          alert(data.message || 'Амжилтгүй.');
+        }
+        localStorage.setItem('token', token);
+        alert('Нэвтрэлт амжилттай!');
+      });
+    </script>
+
+    <script>
+      document
+        .getElementById('deleteForm')
+        .addEventListener('submit', async function (e) {
+          e.preventDefault();
+          const formData = new FormData(e.target);
+          const id = formData.get('id');
+
+          const response = await fetch('/delete', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id })
+          });
+
+          const result = await response.json();
+          alert(result.message || 'Something happened');
+        });
+    </script>
+
+    <script>
+      const files = [null, null, null, null];
+      const jobIntervals = [null, null, null, null];
+      const outputsData = [[], [], [], []];
+      const hlsInstances = [null, null, null, null];
+
+      function handleFileChange(e, idx) {
+        files[idx] = e.target.files[0];
+      }
+
+      async function handleSubmit(e, idx) {
+        e.preventDefault();
+        if (!files[idx]) {
+          alert('📂 Файл сонгоно уу!');
+          return;
+        }
+
+        const resultDiv = document.getElementById(`result${idx}`);
+        resultDiv.textContent = '⏳ Upload хийж байна...';
+
+        const formData = new FormData();
+        formData.append('video', files[idx]);
+
+        try {
+          const res = await fetch('/upload', {
+            method: 'POST',
+            body: formData
+          });
+
+          const data = await res.json();
+
+          if (data.jobId) {
+            resultDiv.textContent = `📤 Upload амжилттай. Job ID: ${data.jobId}`;
+            pollJobStatus(idx, data.jobId);
+          } else if (data.error) {
+            resultDiv.textContent = `❌ Алдаа: ${data.error}`;
+          }
+        } catch (err) {
+          console.error(err);
+          resultDiv.textContent = '❌ Upload амжилтгүй боллоо.';
+        }
+      }
+
+      function pollJobStatus(idx, jobId) {
+        if (jobIntervals[idx]) clearInterval(jobIntervals[idx]);
+
+        jobIntervals[idx] = setInterval(async () => {
+          const resultDiv = document.getElementById(`result${idx}`);
+          try {
+            const res = await fetch(`/job/${jobId}/result`);
+            const data = await res.json();
+
+            if (data.status === '✅ Хувиргасан') {
+              clearInterval(jobIntervals[idx]);
+              resultDiv.textContent = '✅ Видео амжилттай хувиргалаа!';
+
+              if (data.outputs && data.outputs.data) {
+                const videoData = Array.isArray(data.outputs.data)
+                  ? data.outputs.data
+                  : [data.outputs.data];
+
+                outputsData[idx] = videoData;
+                setupPlayer(idx);
+              } else {
+                resultDiv.textContent = '✅ Хувиргасан ч видео линк олдсонгүй.';
+              }
+            } else if (data.status?.startsWith?.('❌')) {
+              clearInterval(jobIntervals[idx]);
+              resultDiv.textContent = `❌ Алдаа: ${
+                data.reason || 'Тодорхойгүй'
+              }`;
+            } else {
+              resultDiv.textContent = `⏳ Хүлээж байна: ${data.status}`;
+            }
+          } catch (err) {
+            clearInterval(jobIntervals[idx]);
+            resultDiv.textContent = '❌ Алдаа гарлаа.';
+            console.error(err);
+          }
+        }, 2000);
+      }
+
+      function getBestUrl(videoObj) {
+        if (videoObj.url && videoObj.url.trim() !== '') return videoObj.url;
+
+        const qualities = ['p1080', 'p720', 'p480', 'p360'];
+        for (const q of qualities) {
+          if (videoObj[q]) return videoObj[q];
+        }
+        return null;
+      }
+
+      function setupPlayer(idx) {
+        const playerContainer = document.getElementById(
+          `playerContainer${idx}`
+        );
+        const select = document.getElementById(`select${idx}`);
+        const video = document.getElementById(`video${idx}`);
+
+        if (!outputsData[idx] || outputsData[idx].length === 0) {
+          console.warn('outputsData хоосон байна:', idx);
+          return;
+        }
+
+        const videoObj = outputsData[idx][0];
+
+        let options = '';
+
+        if (videoObj.url && videoObj.url.trim() !== '') {
+          options += `<option value="${videoObj.url}">default url</option>`;
+        }
+
+        const qualities = ['p1080', 'p720', 'p480', 'p360'];
+        qualities.forEach((q) => {
+          if (videoObj[q]) {
+            options += `<option value="${videoObj[q]}">${q}</option>`;
+          }
+        });
+
+        if (!options) {
+          if (videoObj.p720) {
+            options = `<option value="${videoObj.p720}">p720</option>`;
+          } else {
+            console.error('Video-д тохирох URL алга:', videoObj);
+            return;
+          }
+        }
+
+        select.innerHTML = options;
+        playerContainer.style.display = 'block';
+
+        select.value = getBestUrl(videoObj);
+
+        changeVideoSource(idx);
+      }
+
+      function changeVideoSource(idx) {
+        const select = document.getElementById(`select${idx}`);
+        const video = document.getElementById(`video${idx}`);
+        const url = select.value;
+
+        if (hlsInstances[idx]) {
+          hlsInstances[idx].destroy();
+          hlsInstances[idx] = null;
+        }
+
+        if (Hls.isSupported()) {
+          const hls = new Hls();
+          hls.loadSource(url);
+          hls.attachMedia(video);
+          hls.on(Hls.Events.MANIFEST_PARSED, () => {
+            video.play().catch(() => {});
+          });
+          hlsInstances[idx] = hls;
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+          video.src = url;
+          video.play().catch(() => {});
+        } else {
+          alert('Таны браузер HLS видео тоглуулах дэмжлэггүй байна.');
+        }
+      }
+    </script>
+  </body>
+</html>
