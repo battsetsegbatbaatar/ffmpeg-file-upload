@@ -73,6 +73,8 @@ app.post(
   '/upload',
   upload.single('video'),
   async (req: Request, res: Response): Promise<void> => {
+    console.log(req.headers);
+    console.log(req.headers['authorization']);
     const token = req.headers['authorization'];
     if (!token) {
       res.status(401).json({ success: false, message: 'Нэвтрээгүй байна.' });
@@ -124,6 +126,14 @@ app.get(
 
       const state = await job.getState();
       if (state === 'completed') {
+        try {
+          if (fs.existsSync(job.inputPath)) fs.unlinkSync(job.inputPath);
+          if (fs.existsSync(job.outputDir))
+            fs.rmSync(job.outputDir, { recursive: true, force: true });
+        } catch (err) {
+          console.error('📛 Файл устгах үед алдаа:', err);
+        }
+
         res.json({
           status: '✅ Хувиргасан',
           outputs: job.returnvalue
