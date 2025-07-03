@@ -1,20 +1,28 @@
 # Node.js
 node_modules/
+package-lock.json
+
+# Build output
 dist/
-uploads/
 outputs/
+
+# Uploads
+uploads/
+
+# dotenv files
+.env
 
 # TypeScript
 *.tsbuildinfo
 
 # Logs
-*.log
-logs/
-
-# Env
-.env
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # MacOS
 .DS_Store
 
+# IDEs
 .vscode/
+.idea/
