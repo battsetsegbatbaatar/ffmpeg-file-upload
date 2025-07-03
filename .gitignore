@@ -1,7 +1,20 @@
-/dist
+# Node.js
+node_modules/
+dist/
+uploads/
+outputs/
+
+# TypeScript
+*.tsbuildinfo
+
+# Logs
+*.log
+logs/
+
+# Env
 .env
-.env.*
-.docker-compose.yml
-.Dockerfile
-.outputs
-.uploads
+
+# MacOS
+.DS_Store
+
+.vscode/
